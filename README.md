@@ -1,13 +1,31 @@
-# Volatility forecasting: EWMA, GARCH and a small TCN
+![Volatility Forecasting banner](assets/banner.svg)
 
-Daily market data, chronological evaluation, and a deliberately small neural model.
-The target is next-day squared return; this is a forecasting study, not a trading claim.
+# Volatility Forecasting
+
+A chronological comparison of three next-day volatility forecasting approaches:
+
+- Exponentially weighted moving average
+- Gaussian GARCH
+- A small temporal convolutional network
+
+The target is next-day squared return. The project evaluates forecasting error and does not convert forecasts into a trading strategy.
+
+## Run
 
 ```bash
-../NAS/venv/bin/python run.py --tickers SPY QQQ --epochs 8
-../NAS/venv/bin/python -m unittest -v
+python -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+python run.py --tickers SPY QQQ --epochs 8
+python -m unittest -v
 ```
 
-Data comes from Stooq CSV downloads and is cached with hashes. The report records
-the download URLs, dates and metrics. The GARCH implementation is a simple
-Gaussian maximum-likelihood fit; no `arch` dependency is needed.
+## Data and evaluation
+
+Daily prices are downloaded from Stooq, cached locally, and recorded with source URLs and hashes. All splits are chronological. Normalization and model fitting use training data only.
+
+The GARCH model uses a direct Gaussian maximum-likelihood implementation, so the project does not require the `arch` package.
+
+## Scope
+
+This is a small forecasting benchmark. Results depend on the selected assets, time period, loss function, and neural training budget. Forecast accuracy alone does not establish economic value.
